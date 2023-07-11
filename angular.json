@@ -29,8 +29,10 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": []
+            ],,
+            "scripts": [
+              "src/assets/js/jQuery.js"
+            ]
           },
           "configurations": {
             "production": {

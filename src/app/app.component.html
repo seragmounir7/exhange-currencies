@@ -17,6 +17,7 @@
         </div>
     </div>
 </header>
+
 <main>
     <section class="p-4 pb-0">
         <div class="container">
@@ -33,11 +34,10 @@
                     <div class="row align-items-center">
                         <div class="col-2-5 row ps-0">
                             <div class="d-flex box mb-0 col-1 justify-content-between">
-                                <input class="border-0 col-2-5" type="number" placeholder="0">
+                                <input class="border-0 col-2-5" type="number" [(ngModel)]="baseAmount" (keyup)="changeBaseAmount($event)" placeholder="0">
                                 <span class="dimmed col-1-5 text-center">|</span>
-                                <select class="col-2-5 p-0 border-0 col-1-3" name="" id="">
-                                    <option value="">Euro</option>
-                                    <option value="">USD</option>
+                                <select class="col-2-5 p-0 border-0 col-1-3" name="baseCurrency" id="baseCurrency" [(ngModel)]="keys[baseCurrency]" (change)="changeBaseCurrency()">
+                                    <option *ngFor="let rateKey of keys;let i = index" [attr.data-index]="i">{{rateKey}}</option>
                                 </select>
                             </div>
                         </div>
@@ -46,11 +46,10 @@
                         </div>
                         <div class="col-2-5 row">
                             <div class="d-flex box mb-0 col-1 justify-content-between">
-                                <input class="border-0 col-2-5" type="number" placeholder="0">
+                                <input class="border-0 col-2-5"  type="number" [(ngModel)]="targetAmount" (keyup)="changeTargetAmount($event)" placeholder="0">
                                 <span class="dimmed col-1-5 text-center">|</span>
-                                <select class="col-2-5 p-0 border-0" name="" id="">
-                                    <option value="">Euro</option>
-                                    <option value="">USD</option>
+                                <select class="col-2-5 p-0 border-0 col-1-3" name="targetCurrency" id="targetCurrency" [(ngModel)]="keys[targetCurrency]" (change)="changeTargetCurrency()">
+                                    <option *ngFor="let rateKey of keys;let i = index" [attr.data-index]="i">{{rateKey}}</option>
                                 </select>
                             </div>
                         </div>
