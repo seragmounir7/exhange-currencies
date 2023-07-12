@@ -23,19 +23,37 @@ export class AppComponent {
   baseRate:number = 0
   targetRate:number = 0
 
-  constructor(){
-    this.baseCurrency = this.euro
-    this.targetCurrency = this.usd
+  importantCurrencies = ["USD","EUR","JPY","GBP","AUD","CAD","CHF","CNH","HKD"]
 
+  constructor(){
+    this.initialCurrencies()
+  }
+
+  initialCurrencies(){
     let that = this
     $.get('https://openexchangerates.org/api/latest.json', {app_id: '99d9e374d17f46f2aad02cb2186b70dc'}, function(data) {
       that.data = data
       that.keys = Object.keys(data.rates)
       that.values = Object.values(data.rates)
 
+      that.baseCurrency = that.keys.indexOf("EUR")
+      that.targetCurrency = that.keys.indexOf("USD")
       that.baseRate = that.values[that.baseCurrency]
       that.targetRate = that.values[that.targetCurrency]
+      
+      that.getImportantCurrencies();
     })
+  }
+
+  changeCurrencies(baseCurrency,targetCurrency){
+    this.baseCurrency = this.keys.indexOf(baseCurrency)
+    this.targetCurrency = this.keys.indexOf(targetCurrency)
+    this.baseRate = this.values[this.baseCurrency]
+    this.targetRate = this.values[this.targetCurrency]
+    this.targetAmount = this.baseAmount * this.targetRate / this.baseRate
+  }
+
+  getImportantCurrencies(){
   }
 
   changeBaseCurrency(){

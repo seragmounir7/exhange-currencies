@@ -8,10 +8,10 @@
         <div>
             <ul class="d-flex">
                 <li class="ms-3">
-                    <button class="bg-dark">EUR-USD Details</button>
+                    <button class="bg-dark" (click)="changeCurrencies('EUR','USD')">EUR-USD Details</button>
                 </li>
                 <li class="ms-3">
-                    <button class="bg-dark">EUR-GBD Details</button>
+                    <button class="bg-dark" (click)="changeCurrencies('EUR','GBP')">EUR-GBP Details</button>
                 </li>
             </ul>
         </div>
@@ -19,7 +19,7 @@
 </header>
 
 <main>
-    <section class="p-4 pb-0">
+    <section class="p-4 pb-0 pt-4">
         <div class="container">
             <div>
                 <small class="fw-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit</small>
@@ -28,13 +28,13 @@
         </div>
     </section>
     <section>
-        <div class="container mb-5">
+        <div class="container pb-5 pt-5">
             <div class="row box pe-0 ps-0" style="box-shadow: unset;">                
                 <div class="col-2-3 pe-5 ps-0">
                     <div class="row align-items-center">
                         <div class="col-2-5 row ps-0">
                             <div class="d-flex box mb-0 col-1 justify-content-between">
-                                <input class="border-0 col-2-5" type="number" [(ngModel)]="baseAmount" (keyup)="changeBaseAmount($event)" placeholder="0">
+                                <input class="border-0 col-2-5" type="number" [(ngModel)]="baseAmount" (keyup)="changeBaseAmount($event)" (change)="changeBaseAmount($event)" placeholder="0">
                                 <span class="dimmed col-1-5 text-center">|</span>
                                 <select class="col-2-5 p-0 border-0 col-1-3" name="baseCurrency" id="baseCurrency" [(ngModel)]="keys[baseCurrency]" (change)="changeBaseCurrency()">
                                     <option *ngFor="let rateKey of keys;let i = index" [attr.data-index]="i">{{rateKey}}</option>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-2-5 row">
                             <div class="d-flex box mb-0 col-1 justify-content-between">
-                                <input class="border-0 col-2-5"  type="number" [(ngModel)]="targetAmount" (keyup)="changeTargetAmount($event)" placeholder="0">
+                                <input class="border-0 col-2-5"  type="number" [(ngModel)]="targetAmount" (keyup)="changeTargetAmount($event)" (change)="changeTargetAmount($event)" placeholder="0">
                                 <span class="dimmed col-1-5 text-center">|</span>
                                 <select class="col-2-5 p-0 border-0 col-1-3" name="targetCurrency" id="targetCurrency" [(ngModel)]="keys[targetCurrency]" (change)="changeTargetCurrency()">
                                     <option *ngFor="let rateKey of keys;let i = index" [attr.data-index]="i">{{rateKey}}</option>
@@ -67,49 +67,9 @@
     <section id="most-common" class="mb-5">
         <div class="container">
             <div class="row">
-                <div class="col-1-3">
+                <div class="col-1-3" *ngFor="let currency of importantCurrencies">
                     <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1 euro = 1 usd
-                    </div>
-                </div>
-                <div class="col-1-3">
-                    <div class="box mb-2">
-                        1
+                        {{baseAmount}} {{keys[baseCurrency]}} = 1 {{currency}}
                     </div>
                 </div>
             </div>
