@@ -17,13 +17,15 @@ export class AppComponent {
   baseCurrency:number = 1 //euro
   targetCurrency:number = 20 //euro
 
+  apiKey = "99d9e374d17f46f2aad02cb2186b70dc"
+
   baseAmount:number = 0
   targetAmount:number = 0
 
   baseRate:number = 0
   targetRate:number = 0
 
-  importantCurrencies = ["USD","EUR","JPY","GBP","AUD","CAD","CHF","CNH","HKD"]
+  importantCurrencies = ["USD","EUR","JPY","GBP","AUD","CAD","CHF","EGP","HKD"]
 
   constructor(){
     this.initialCurrencies()
@@ -31,7 +33,7 @@ export class AppComponent {
 
   initialCurrencies(){
     let that = this
-    $.get('https://openexchangerates.org/api/latest.json', {app_id: '99d9e374d17f46f2aad02cb2186b70dc'}, function(data) {
+    $.get('https://openexchangerates.org/api/latest.json', {app_id: this.apiKey}, function(data) {
       that.data = data
       that.keys = Object.keys(data.rates)
       that.values = Object.values(data.rates)

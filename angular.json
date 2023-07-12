@@ -28,8 +28,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
-            ],,
+              "src/styles.scss",
+              "node_modules/currency-flags/dist/currency-flags.min.css"
+            ],
             "scripts": [
               "src/assets/js/jQuery.js"
             ]
