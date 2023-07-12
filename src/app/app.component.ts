@@ -72,11 +72,11 @@ export class AppComponent {
 
   changeBaseAmount(e:any){
     //changed amount is = e.target.value
-    this.targetAmount = this.baseAmount * this.targetRate / this.baseRate
+    this.targetAmount = parseFloat((this.baseAmount * this.targetRate / this.baseRate).toFixed(2).toString())
   }
 
   changeTargetAmount(e:any){
     //changed amount is = e.target.value
-    this.baseAmount = this.targetAmount * this.baseRate / this.targetRate
+    this.baseAmount = parseFloat((this.targetAmount * this.baseRate / this.targetRate).toFixed(2).toString())
   }
 }
