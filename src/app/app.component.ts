@@ -14,22 +14,51 @@ export class AppComponent {
   values:any = []
   euro:number = 46
   usd:number = 149
-  baseCurrency:number = 1 //euro
-  targetCurrency:number = 20 //euro
+  baseCurrency:number = 0
+  targetCurrency:number = 0
 
   apiKey = "99d9e374d17f46f2aad02cb2186b70dc"
 
-  baseAmount:number = 0
+  baseAmount:number = 1
   targetAmount:number = 0
 
   baseRate:number = 0
   targetRate:number = 0
 
   importantCurrencies = ["USD","EUR","JPY","GBP","AUD","CAD","CHF","EGP","HKD"]
+  yesterday = ""
+  today = ""
+
+  yesterdayAmoundOfBaseCurrency:any = 0
+  todayAmoundOfBaseCurrency:any = 0
+
+  dates:any
+  datesValues:any = []
+
+  baseRateOfYesterday:any
+  baseRateOfMonthAgo:any
+  baseRateOfYearAgo:any
+
+  formattedYesterday:string = ""
+  formattedLastMonth:string = ""
+  formattedLastYear:string = ""
+
+  /*
+  **
+      The following function is the constructor
+  **
+  */
 
   constructor(){
     this.initialCurrencies()
+    this.getDates()
   }
+
+  /*
+  **
+      The following functions to initial currencies
+  **
+  */
 
   initialCurrencies(){
     let that = this
@@ -42,20 +71,59 @@ export class AppComponent {
       that.targetCurrency = that.keys.indexOf("USD")
       that.baseRate = that.values[that.baseCurrency]
       that.targetRate = that.values[that.targetCurrency]
-      
-      that.getImportantCurrencies();
     })
   }
+
+  /*
+  **
+      The following functions to get values of the dates
+  **
+  */
+
+  getDates(){
+    
+    var today = new Date()
+    var yesterday = new Date();
+    var month = new Date();
+    var year = new Date();
+    
+    yesterday.setDate(today.getDate() - 1)
+    month.setDate(today.getDate() - 30)
+    year.setDate(today.getDate() - 365)
+
+    this.formattedYesterday = yesterday.toISOString().slice(0, 10);
+    this.formattedLastMonth = month.toISOString().slice(0, 10);
+    this.formattedLastYear = year.toISOString().slice(0, 10);
+    this.dates = [this.formattedYesterday,this.formattedLastMonth,this.formattedLastYear]
+    this.dates.forEach((date) => {
+    
+      this.getValuesOfTheDate(date)
+
+    })
+    
+  }
+
+  getValuesOfTheDate(date){
+    let that = this
+    $.get('https://openexchangerates.org/api/historical/' + date + '.json', {app_id: this.apiKey}, function(data) {
+      that.datesValues.push(data)
+      data = null
+      that.changeBaseCurrency()
+    })
+  }
+
+  /*
+  **
+      The following functions the events of changing values
+  **
+  */
 
   changeCurrencies(baseCurrency,targetCurrency){
     this.baseCurrency = this.keys.indexOf(baseCurrency)
     this.targetCurrency = this.keys.indexOf(targetCurrency)
-    this.baseRate = this.values[this.baseCurrency]
-    this.targetRate = this.values[this.targetCurrency]
+    this.baseRate = this.values[this.baseCurrency].toFixed(2)
+    this.targetRate = this.values[this.targetCurrency].toFixed(2)
     this.targetAmount = this.baseAmount * this.targetRate / this.baseRate
-  }
-
-  getImportantCurrencies(){
   }
 
   changeBaseCurrency(){
@@ -63,6 +131,12 @@ export class AppComponent {
     // key = this.keys[this.keys.indexOf(selectedBaseCurrency.value)]
     this.baseRate = this.values[this.keys.indexOf(selectedBaseCurrency.value)]
     this.targetAmount = this.baseAmount * this.targetRate / this.baseRate
+
+    // this.baseRateOfYesterday = Object.values(this.datesValues[0].rates)[this.baseCurrency]
+    
+    this.baseRateOfYesterday = Object.values(this.datesValues[0].rates)[this.keys.indexOf(selectedBaseCurrency.value)]
+    this.baseRateOfMonthAgo = Object.values(this.datesValues[1].rates)[this.keys.indexOf(selectedBaseCurrency.value)]
+    this.baseRateOfYearAgo = Object.values(this.datesValues[2].rates)[this.keys.indexOf(selectedBaseCurrency.value)]
   }
 
   changeTargetCurrency(){
