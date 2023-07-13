@@ -55,19 +55,6 @@ export class AppComponent {
   constructor(){
     this.initialCurrencies()
     this.getDates()
-
-    var query_vars = {
-      app_id: this.apiKey,
-      start: '2022-01-01',
-      end: '2022-01-31',
-      base: 'EUR',
-      symbols: 'BTC,EUR,HKD',
-      prettyprint: 1
-  }
-  
-  $.get('https://openexchangerates.org/api/time-series.json', query_vars, function(data) {
-      console.log(data);
-  });
   }
 
   /*
