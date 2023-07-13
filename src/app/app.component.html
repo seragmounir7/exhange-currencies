@@ -20,10 +20,17 @@
 
 <main>
     <section class="p-4 pb-0 pt-5">
-        <div class="container">
-            <div>
+        <div class="container d-flex justify-content-between">
+            <div *ngIf="!details">
                 <small class="fw-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit</small>
                 <h1 class="h3 text-dark">Currency Exchanger</h1>
+            </div>
+            <div *ngIf="details">
+                <small class="fw-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit</small>
+                <h1 class="h3 text-dark">{{detailedCurrency}}</h1>
+            </div>
+            <div *ngIf="details">
+                <button (click)="getHome()">Back</button>
             </div>
         </div>
     </section>
@@ -37,7 +44,7 @@
                                 <input class="border-0 col-2-5" step='1.00' type="number" [(ngModel)]="baseAmount" (keyup)="changeBaseAmount($event)" (change)="changeBaseAmount($event)" placeholder="0">
                                 <span class="dimmed col-1-5 text-center">|</span>
                                 <span *ngIf="keys[baseCurrency]" [class]="'currency-flag currency-flag-'+ keys[baseCurrency].toLowerCase()"></span>
-                                <select class="col-2-5 p-0 border-0 col-1-3" name="baseCurrency" id="baseCurrency" [(ngModel)]="keys[baseCurrency]" (change)="changeBaseCurrency()">
+                                <select class="col-2-5 p-0 border-0 col-1-3" name="baseCurrency" id="baseCurrency" [(ngModel)]="keys[baseCurrency]" (change)="changeBaseCurrency()" [disabled]="details">
                                     <option *ngFor="let rateKey of keys;let i = index" [attr.data-index]="i">{{rateKey}}</option>
                                 </select>
                             </div>
@@ -59,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-1-3 bg-dark rounded p-4 d-flex flex-column justify-content-between">
-                    <p class="text-center h4 fw-700">More About {{keys[baseCurrency]}}</p>
+                    <p class="text-center h4 fw-700">Compared with today</p>
                     <ul id="timetable">
                         <li class="d-flex align-items-center justify-content-center">
                             {{formattedYesterday}}
@@ -83,8 +90,8 @@
                             {{(baseRateOfYearAgo/baseRate).toFixed(2).toString()}}
                         </li>
                     </ul>
-                    <div class="d-flex pb-0 justify-content-center">
-                        <a href="./details.html" style="color:#fff" class="text-decoreation-underline"><small>More Details</small></a>
+                    <div class="d-flex pb-0 justify-content-center" *ngIf="details == false">
+                        <span style="color:#fff;cursor: pointer;" (click)="getDetails()" class="text-decoreation-underline"><small>More Details about {{keys[baseCurrency]}}</small></span>
                     </div>
                 </div> 
             </div>

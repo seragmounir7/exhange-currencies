@@ -17,6 +17,9 @@ export class AppComponent {
   baseCurrency:number = 0
   targetCurrency:number = 0
 
+  details = false
+  detailedCurrency = ""
+
   apiKey = "99d9e374d17f46f2aad02cb2186b70dc"
 
   baseAmount:number = 1
@@ -52,6 +55,19 @@ export class AppComponent {
   constructor(){
     this.initialCurrencies()
     this.getDates()
+
+    var query_vars = {
+      app_id: this.apiKey,
+      start: '2022-01-01',
+      end: '2022-01-31',
+      base: 'EUR',
+      symbols: 'BTC,EUR,HKD',
+      prettyprint: 1
+  }
+  
+  $.get('https://openexchangerates.org/api/time-series.json', query_vars, function(data) {
+      console.log(data);
+  });
   }
 
   /*
@@ -67,8 +83,12 @@ export class AppComponent {
       that.keys = Object.keys(data.rates)
       that.values = Object.values(data.rates)
 
-      that.baseCurrency = that.keys.indexOf("EUR")
-      that.targetCurrency = that.keys.indexOf("USD")
+      that.baseCurrency = that.keys.findIndex((key)=>{
+        return key == "EUR" 
+      })
+      that.targetCurrency = that.keys.findIndex((key)=>{
+        return key == "USD" 
+      })
       that.baseRate = that.values[that.baseCurrency]
       that.targetRate = that.values[that.targetCurrency]
     })
@@ -108,7 +128,7 @@ export class AppComponent {
     $.get('https://openexchangerates.org/api/historical/' + date + '.json', {app_id: this.apiKey}, function(data) {
       that.datesValues.push(data)
       data = null
-      that.changeBaseCurrency()
+      that.datesValues.length == 3 ? that.changeBaseCurrency() : null
     })
   }
 
@@ -119,7 +139,7 @@ export class AppComponent {
   */
 
   changeCurrencies(baseCurrency,targetCurrency){
-    this.baseCurrency = this.keys.indexOf(baseCurrency)
+    this.baseCurrency = this.keys.find((baseCurrency))
     this.targetCurrency = this.keys.indexOf(targetCurrency)
     this.baseRate = this.values[this.baseCurrency].toFixed(2)
     this.targetRate = this.values[this.targetCurrency].toFixed(2)
@@ -154,5 +174,23 @@ export class AppComponent {
   changeTargetAmount(e:any){
     //changed amount is = e.target.value
     this.baseAmount = parseFloat((this.targetAmount * this.baseRate / this.targetRate).toFixed(2).toString())
+  }
+
+  /*
+  **
+      The following function is to get details
+  **
+  */
+
+  getHome(){
+    this.details = false
+  }
+
+  getDetails(){
+    this.details = true
+    var cc = require('currency-codes');
+    // console.log(this.keys)
+    this.detailedCurrency = cc.code(this.keys[this.baseCurrency]).currency;
+
   }
 }

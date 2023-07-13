@@ -298,6 +298,10 @@ button,
     }
 }
 
+button.bg-dark:hover {
+    background-color: #212529cc;
+}
+
 h1,
 .h1 {
     font-size: 3rem;
@@ -383,7 +387,7 @@ h4,
 }
 
 .pe-0 {
-    padding-left: 0;
+    padding-right: 0!important;
 }
 
 .pb-0 {
@@ -496,6 +500,14 @@ footer {
     @media (max-width:768px){
         width: 100%;
         padding-right: 0;
+
+        .row {
+            flex-direction: column;
+
+            .col-2-5 {
+                width: 100%;
+            }
+        }
     }
 }
 
