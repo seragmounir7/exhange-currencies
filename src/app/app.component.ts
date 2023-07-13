@@ -126,7 +126,7 @@ export class AppComponent {
   */
 
   changeCurrencies(baseCurrency,targetCurrency){
-    this.baseCurrency = this.keys.find((baseCurrency))
+    this.baseCurrency = this.keys.indexOf((baseCurrency))
     this.targetCurrency = this.keys.indexOf(targetCurrency)
     this.baseRate = this.values[this.baseCurrency].toFixed(2)
     this.targetRate = this.values[this.targetCurrency].toFixed(2)
